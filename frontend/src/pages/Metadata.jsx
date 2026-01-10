@@ -1,63 +1,190 @@
 import { useState } from "react";
-import PlatformSelector from "../components/PlatformSelector";
-import SliderGroup from "../components/SliderGroup";
+import "./Metadata.css";
 
-const PLATFORM_RULES = {
-  shutterstock: { description: false, keywords: 50 },
-  adobe: { description: true, keywords: 49 },
-  youtube: { description: true, keywords: 15 },
-  tiktok: { description: false, keywords: 10 },
-};
+const PLATFORMS = [
+  "Shutterstock",
+  "Adobe Stock",
+  "Vecteezy",
+  "Depositphotos",
+  "123RF",
+  "YouTube",
+  "TikTok",
+  "VectorStock",
+  "Freepik",
+];
 
 function Metadata() {
-  const [platform, setPlatform] = useState(null);
-  const [enableDescription, setEnableDescription] = useState(false);
+  // ====== STATES ======
+  const [platform, setPlatform] = useState("");
+  const [tokens] = useState(50); // FREE PLAN LOCKED
+  const [descEnabled, setDescEnabled] = useState(false);
 
-  const [titleMin, setTitleMin] = useState(5);
-  const [titleMax, setTitleMax] = useState(20);
-  const [keywordMin, setKeywordMin] = useState(30);
-  const [keywordMax, setKeywordMax] = useState(50);
-  const [descMin, setDescMin] = useState(20);
-  const [descMax, setDescMax] = useState(60);
+  const [titleRange, setTitleRange] = useState([7, 20]);
+  const [keywordRange, setKeywordRange] = useState([45, 48]);
+  const [descRange, setDescRange] = useState([10, 20]);
 
-  const selectPlatform = (p) => {
+  const [files, setFiles] = useState([]);
+  const [csvType, setCsvType] = useState("jpg");
+  const [apiKey, setApiKey] = useState("");
+
+  // ====== HANDLERS ======
+  const handleFileUpload = (e) => {
+    setFiles([...e.target.files]);
+  };
+
+  const handlePlatformSelect = (p) => {
     setPlatform(p);
-    setEnableDescription(PLATFORM_RULES[p].description);
-    setKeywordMax(PLATFORM_RULES[p].keywords);
+
+    // Auto description ON only for platforms that use it
+    const descPlatforms = ["YouTube"];
+    setDescEnabled(descPlatforms.includes(p));
   };
 
   return (
-    <section>
-      <h1>Metadata Generator</h1>
+    <div className="metadata-page">
+      {/* ========== SIDEBAR ========== */}
+      <aside className="sidebar">
+        <h3>Metadata Customization</h3>
 
-      <PlatformSelector onSelect={selectPlatform} />
-
-      <label>
-        <input
-          type="checkbox"
-          checked={enableDescription}
-          onChange={() => setEnableDescription(!enableDescription)}
+        <Slider
+          label="Min Title Words"
+          min={3}
+          max={20}
+          value={titleRange[0]}
+          disabled
         />
-        Enable Description
-      </label>
 
-      <SliderGroup
-        titleMin={titleMin}
-        setTitleMin={setTitleMin}
-        titleMax={titleMax}
-        setTitleMax={setTitleMax}
-        keywordMin={keywordMin}
-        setKeywordMin={setKeywordMin}
-        keywordMax={keywordMax}
-        setKeywordMax={setKeywordMax}
-        descMin={descMin}
-        setDescMin={setDescMin}
-        descMax={descMax}
-        setDescMax={setDescMax}
-        enableDescription={enableDescription}
-      />
-    </section>
+        <Slider
+          label="Max Title Words"
+          min={5}
+          max={30}
+          value={titleRange[1]}
+          disabled
+        />
+
+        <Slider
+          label="Min Keywords"
+          min={10}
+          max={50}
+          value={keywordRange[0]}
+          disabled
+        />
+
+        <Slider
+          label="Max Keywords"
+          min={20}
+          max={60}
+          value={keywordRange[1]}
+          disabled
+        />
+
+        <div className="toggle-row">
+          <span>Description</span>
+          <input
+            type="checkbox"
+            checked={descEnabled}
+            disabled
+            readOnly
+          />
+        </div>
+
+        <div className="api-key">
+          <label>API Key</label>
+          <input
+            type="password"
+            placeholder="Connect your API key"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+          />
+        </div>
+      </aside>
+
+      {/* ========== MAIN ========== */}
+      <main className="main">
+        {/* TOP BAR */}
+        <div className="top-bar">
+          <div className="platforms">
+            <span>PLATFORMS:</span>
+            {PLATFORMS.map((p) => (
+              <button
+                key={p}
+                className={platform === p ? "active" : ""}
+                onClick={() => handlePlatformSelect(p)}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
+          <div className="tokens">
+            🔋 Tokens: <strong>{tokens}</strong> (Free Plan)
+          </div>
+        </div>
+
+        {/* UPLOAD CARD */}
+        <div className="upload-card">
+          <h2>Choose Files</h2>
+          <p>JPG / JPEG · PNG · SVG · Videos</p>
+
+          <input
+            type="file"
+            multiple
+            onChange={handleFileUpload}
+          />
+
+          <small>
+            Unlimited metadata • CSV export • Secure processing
+          </small>
+        </div>
+
+        {/* FILE PREVIEW */}
+        {files.length > 0 && (
+          <div className="file-list">
+            {files.map((file, i) => (
+              <div key={i} className="file-item">
+                {file.name}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ACTIONS */}
+        <div className="actions">
+          <button className="btn process">Process</button>
+
+          <div className="export">
+            <select
+              value={csvType}
+              onChange={(e) => setCsvType(e.target.value)}
+            >
+              <option value="jpg">JPG CSV</option>
+              <option value="eps">EPS CSV</option>
+            </select>
+
+            <button className="btn download">
+              Download CSV
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }
 
+// ====== REUSABLE SLIDER ======
+const Slider = ({ label, min, max, value, disabled }) => (
+  <div className="slider">
+    <label>{label}</label>
+    <input
+      type="range"
+      min={min}
+      max={max}
+      value={value}
+      disabled={disabled}
+    />
+    <span>{value}</span>
+  </div>
+);
+
 export default Metadata;
+

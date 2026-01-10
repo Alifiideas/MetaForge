@@ -1,0 +1,139 @@
+.metadata-page {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+  background: radial-gradient(circle at top, #12172a, #0b0f19);
+  color: #eaeaf0;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background: #0f1324;
+  padding: 24px;
+  border-right: 1px solid #1f2440;
+}
+
+.sidebar h3 {
+  margin-bottom: 20px;
+}
+
+.slider {
+  margin-bottom: 18px;
+}
+
+.slider label {
+  font-size: 0.85rem;
+  color: #b6bbff;
+}
+
+.slider input {
+  width: 100%;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.api-key input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: #1a1f36;
+  color: white;
+}
+
+/* ===== MAIN ===== */
+.main {
+  padding: 30px 40px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.platforms button {
+  margin: 0 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #1a1f36;
+  color: #cfd3ff;
+  border: none;
+  cursor: pointer;
+}
+
+.platforms button.active {
+  background: linear-gradient(135deg, #6d5cff, #4cc9f0);
+  color: white;
+}
+
+.tokens {
+  background: #1a1f36;
+  padding: 8px 14px;
+  border-radius: 20px;
+}
+
+/* ===== UPLOAD ===== */
+.upload-card {
+  background: #141a2e;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.upload-card input {
+  margin: 15px 0;
+}
+
+.file-list {
+  margin-bottom: 30px;
+}
+
+.file-item {
+  background: #1a1f36;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+/* ===== ACTIONS ===== */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.export {
+  display: flex;
+  gap: 10px;
+}
+
+select {
+  background: #1a1f36;
+  color: white;
+  border-radius: 8px;
+  padding: 6px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn.process {
+  background: linear-gradient(135deg, #6d5cff, #4cc9f0);
+  color: white;
+}
+
+.btn.download {
+  background: #1f2550;
+  color: white;
+}
