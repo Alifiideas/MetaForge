@@ -1,21 +1,45 @@
 .download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
   padding: 10px 18px;
   border-radius: 12px;
   border: 1px solid #2f356a;
+
   background: #141a2e;
   color: #eaeaf0;
+
   font-weight: 600;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.25s ease;
+
+  transition: background 0.25s ease,
+              border-color 0.25s ease,
+              transform 0.2s ease,
+              box-shadow 0.2s ease;
 }
 
 .download-btn:hover:not(:disabled) {
   background: #1b2145;
   border-color: #6d5cff;
   transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(109, 92, 255, 0.25);
 }
 
-.download-btn:disabled {
+.download-btn:disabled,
+.download-btn.disabled {
   opacity: 0.45;
   cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Icon styling */
+.download-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.download-label {
+  white-space: nowrap;
 }

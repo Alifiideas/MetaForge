@@ -1,20 +1,34 @@
 import "./PlatformSelector.css";
 
-function PlatformSelector({ platforms, value, onChange }) {
+function formatLabel(platform) {
+  return platform.replace(/_/g, " ").toUpperCase();
+}
+
+function PlatformSelector({ platforms = [], value, onChange }) {
   return (
-    <div className="platform-selector">
-      {platforms.map((platform) => (
-        <button
-          key={platform}
-          className={`platform-btn ${
-            value === platform ? "active" : ""
-          }`}
-          onClick={() => onChange(platform)}
-          type="button"
-        >
-          {platform.replace("_", " ").toUpperCase()}
-        </button>
-      ))}
+    <div
+      className="platform-selector"
+      role="tablist"
+      aria-label="Select platform"
+    >
+      {platforms.map((platform) => {
+        const isActive = value === platform;
+
+        return (
+          <button
+            key={platform}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            className={`platform-btn ${isActive ? "active" : ""}`}
+            onClick={() => onChange(platform)}
+          >
+            <span className="platform-label">
+              {formatLabel(platform)}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }

@@ -1,0 +1,57 @@
+{
+  "shutterstock": {
+    "label": "Shutterstock",
+    "title": { "min": 3, "max": 25 },
+    "keywords": { "min": 5, "max": 50 },
+    "description": { "enabled": true, "min": 10, "max": 30 },
+    "csv": ["jpg", "video"]
+  },
+
+  "adobe_stock": {
+    "label": "Adobe Stock",
+    "title": { "min": 3, "max": 20 },
+    "keywords": { "min": 5, "max": 49 },
+    "description": { "enabled": true, "min": 10, "max": 25 },
+    "csv": ["jpg"]
+  },
+
+  "freepik": {
+    "label": "Freepik",
+    "title": { "min": 3, "max": 25 },
+    "keywords": { "min": 10, "max": 50 },
+    "description": { "enabled": false },
+    "csv": ["jpg"]
+  },
+
+  "vecteezy": {
+    "label": "Vecteezy",
+    "title": { "min": 3, "max": 20 },
+    "keywords": { "min": 5, "max": 30 },
+    "description": { "enabled": false },
+    "csv": ["jpg"]
+  },
+
+  "depositphoto": {
+    "label": "Depositphotos",
+    "title": { "min": 3, "max": 25 },
+    "keywords": { "min": 5, "max": 50 },
+    "description": { "enabled": true, "min": 10, "max": 30 },
+    "csv": ["jpg"]
+  },
+
+  "youtube": {
+    "label": "YouTube",
+    "title": { "min": 5, "max": 70 },
+    "keywords": { "min": 5, "max": 15 },
+    "description": { "enabled": true, "min": 20, "max": 200 },
+    "csv": ["video"]
+  },
+
+  "tiktok": {
+    "label": "TikTok",
+    "title": { "min": 5, "max": 100 },
+    "keywords": { "min": 3, "max": 10 },
+    "description": { "enabled": true, "min": 10, "max": 150 },
+    "csv": ["video"]
+  }
+}

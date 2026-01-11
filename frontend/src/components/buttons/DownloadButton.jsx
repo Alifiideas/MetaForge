@@ -8,12 +8,19 @@ function DownloadButton({
 }) {
   return (
     <button
-      className="download-btn"
+      type="button"
+      className={`download-btn ${disabled ? "disabled" : ""}`}
       onClick={onClick}
       disabled={disabled}
-      title={disabled ? "Generate metadata first" : `Download ${format}`}
+      aria-disabled={disabled}
+      title={
+        disabled
+          ? "Generate metadata to enable download"
+          : `Download ${format} file`
+      }
     >
-      ⬇️ {label}
+      <span className="download-icon">⬇️</span>
+      <span className="download-label">{label}</span>
     </button>
   );
 }

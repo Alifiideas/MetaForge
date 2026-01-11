@@ -4,7 +4,7 @@ import RangeSlider from "../components/sliders/RangeSlider";
 import ToggleSwitch from "../components/layout/ToggleSwitch";
 import UploadBox from "../components/upload/UploadBox";
 import FilePreview from "../components/upload/FilePreview";
-import PlatformSelector from "../components/PlatformSelector";
+import PlatformSelector from "../components/platform/PlatformSelector";
 import ProcessButton from "../components/buttons/ProcessButton";
 import DownloadButton from "../components/buttons/DownloadButton";
 
@@ -25,7 +25,7 @@ const PLATFORMS = [
   "adobe_stock",
   "vecteezy",
   "depositphoto",
-  "rf123",
+  "123rf",
   "youtube",
   "tiktok",
   "vectorstock",

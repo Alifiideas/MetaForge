@@ -1,27 +1,49 @@
 .platform-selector {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
+  padding: 6px;
+  background: #0f1530;
+  border-radius: 14px;
+  border: 1px solid #1f2555;
 }
 
 .platform-btn {
+  flex: 0 0 auto;
   padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid #2c2f36;
-  background: #151821;
-  color: #ccc;
-  font-size: 13px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #9aa3ff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
 }
 
 .platform-btn:hover {
-  border-color: #4f8cff;
-  color: #fff;
+  background: rgba(109, 92, 255, 0.12);
+  color: #cfd3ff;
 }
 
 .platform-btn.active {
-  background: #4f8cff;
-  color: #fff;
-  border-color: #4f8cff;
+  background: linear-gradient(
+    135deg,
+    rgba(109, 92, 255, 0.35),
+    rgba(76, 201, 240, 0.25)
+  );
+  color: #ffffff;
+  border-color: rgba(109, 92, 255, 0.45);
+  box-shadow: 0 6px 18px rgba(109, 92, 255, 0.25);
+}
+
+.platform-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(109, 92, 255, 0.6);
+}
+
+.platform-label {
+  pointer-events: none;
 }
