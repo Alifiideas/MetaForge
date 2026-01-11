@@ -1,24 +1,165 @@
+/* =========================================================
+   META FORGE — LOADER SYSTEM
+   ========================================================= */
+
+/* ---------- BASE LOADER ---------- */
+
 .loader-wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: #cfd3ff;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
 }
 
+/* Spinner */
 .loader-spinner {
+  width: 18px;
+  height: 18px;
   border: 3px solid rgba(255, 255, 255, 0.15);
-  border-top: 3px solid #6d5cff;
+  border-top-color: #6d5cff;
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
+  flex-shrink: 0;
 }
 
+/* Loader text */
 .loader-text {
   white-space: nowrap;
+  opacity: 0.95;
 }
 
+/* Spinner animation */
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* =========================================================
+   FULLSCREEN / SECTION OVERLAY
+   ========================================================= */
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 30, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Loader card */
+.loader-card {
+  background: linear-gradient(
+    180deg,
+    rgba(30, 35, 70, 0.95),
+    rgba(15, 20, 45, 0.98)
+  );
+  border-radius: 18px;
+  padding: 26px 34px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================================
+   ANIMATED DOTS (THINKING EFFECT)
+   ========================================================= */
+
+.loader-dots::after {
+  content: "";
+  display: inline-block;
+  animation: dots 1.4s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+}
+
+/* =========================================================
+   BUTTON LOADER
+   ========================================================= */
+
+.btn-loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn-loading .loader-wrapper {
+  gap: 8px;
+}
+
+.btn-loading .loader-spinner {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+
+/* =========================================================
+   LOADER STATES
+   ========================================================= */
+
+/* Success */
+.loader-success {
+  color: #4ade80;
+}
+
+.loader-success .loader-spinner {
+  animation: none;
+  border-color: #4ade80;
+  border-top-color: transparent;
+}
+
+/* Error */
+.loader-error {
+  color: #f87171;
+}
+
+.loader-error .loader-spinner {
+  animation: none;
+  border-color: #f87171;
+  border-top-color: transparent;
+}
+
+/* =========================================================
+   GLOW EFFECT (PREMIUM FEEL)
+   ========================================================= */
+
+.glow {
+  box-shadow: 0 0 14px rgba(109, 92, 255, 0.65);
+}
+
+/* =========================================================
+   SIZE VARIANTS
+   ========================================================= */
+
+.loader-sm .loader-spinner {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+
+.loader-lg .loader-spinner {
+  width: 26px;
+  height: 26px;
+  border-width: 4px;
+}
+
+.loader-lg .loader-text {
+  font-size: 1.05rem;
 }

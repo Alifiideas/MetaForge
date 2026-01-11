@@ -1,10 +1,12 @@
 /* =========================================================
-   META FORGE — GLOBAL STYLES
+   META FORGE — GLOBAL DESIGN SYSTEM
    ========================================================= */
 
 @import "./variables.css";
 
-/* ---------- CSS RESET ---------- */
+/* =========================================================
+   CSS RESET & BASE
+========================================================= */
 *,
 *::before,
 *::after {
@@ -30,29 +32,20 @@ body {
   line-height: var(--leading-normal);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* ---------- LINKS ---------- */
+/* =========================================================
+   LINKS
+========================================================= */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* ---------- BUTTON RESET ---------- */
-button {
-  font-family: inherit;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  background: none;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ---------- FORMS ---------- */
+/* =========================================================
+   FORM ELEMENTS
+========================================================= */
 input,
 select,
 textarea {
@@ -61,18 +54,171 @@ textarea {
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 8px 12px;
+  padding: 10px 14px;
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: var(--color-text-muted);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
 }
 
 select {
   cursor: pointer;
 }
 
-/* ---------- SCROLLBAR ---------- */
+/* =========================================================
+   BUTTONS (SYSTEM)
+========================================================= */
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 20px;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+}
+
+/* Primary */
+.btn.primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-info)
+  );
+  color: #ffffff;
+}
+
+.btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+}
+
+/* Secondary */
+.btn.secondary {
+  background: var(--color-bg-soft);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn.secondary:hover {
+  background: var(--color-bg-muted);
+}
+
+/* Large CTA */
+.btn.big {
+  padding: 14px 28px;
+  font-size: var(--text-lg);
+}
+
+/* =========================================================
+   CARDS & SURFACES
+========================================================= */
+.card {
+  background: linear-gradient(
+    180deg,
+    rgba(28, 34, 70, 0.95),
+    rgba(14, 18, 40, 0.98)
+  );
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-lg);
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-info)
+  );
+  color: #ffffff;
+  font-size: var(--text-xs);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   LAYOUT HELPERS
+========================================================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 24px;
+}
+
+.page {
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: clamp(2.4rem, 4vw, 3.1rem);
+}
+
+h2 {
+  font-size: clamp(1.9rem, 3vw, 2.3rem);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+p {
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -91,130 +237,11 @@ select {
 }
 
 /* =========================================================
-   REUSABLE UI UTILITIES
-   ========================================================= */
-
-/* ---------- BUTTONS ---------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: 10px 18px;
-  border-radius: var(--radius-lg);
-  font-weight: 600;
-  transition: transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    background var(--transition-fast);
-}
-
-.btn.primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-info)
-  );
-  color: #fff;
-}
-
-.btn.primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 30px rgba(79, 70, 229, 0.45);
-}
-
-.btn.secondary {
-  background: var(--color-bg-soft);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-}
-
-.btn.secondary:hover {
-  background: var(--color-bg-muted);
-}
-
-.btn.big {
-  padding: 14px 26px;
-  font-size: var(--text-lg);
-}
-
-/* ---------- CARDS ---------- */
-.card {
-  background: linear-gradient(
-    180deg,
-    rgba(30, 35, 70, 0.9),
-    rgba(15, 20, 45, 0.95)
-  );
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-lg);
-}
-
-/* ---------- BADGES ---------- */
-.badge {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-info)
-  );
-  color: #fff;
-  font-size: var(--text-xs);
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.6px;
-  font-weight: 700;
-}
-
-/* =========================================================
-   LAYOUT HELPERS
-   ========================================================= */
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 60px 24px;
-}
-
-.page {
-  min-height: 100vh;
-  padding-top: 80px;
-}
-
-/* =========================================================
-   TYPOGRAPHY
-   ========================================================= */
-
-h1,
-h2,
-h3,
-h4,
-h5 {
-  line-height: var(--leading-tight);
-  font-weight: 700;
-}
-
-h1 {
-  font-size: clamp(2.2rem, 4vw, 3rem);
-}
-
-h2 {
-  font-size: clamp(1.8rem, 3vw, 2.2rem);
-}
-
-h3 {
-  font-size: var(--text-xl);
-}
-
-p {
-  color: var(--color-text-muted);
-}
-
-/* =========================================================
    ANIMATIONS & EFFECTS
-   ========================================================= */
-
+========================================================= */
 @keyframes glowPulse {
   from {
-    opacity: 0.6;
+    opacity: 0.55;
   }
   to {
     opacity: 1;
@@ -227,11 +254,10 @@ p {
 
 /* =========================================================
    RESPONSIVE
-   ========================================================= */
-
+========================================================= */
 @media (max-width: 900px) {
   .container {
-    padding: 40px 18px;
+    padding: 48px 20px;
   }
 }
 

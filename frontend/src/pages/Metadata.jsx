@@ -8,7 +8,6 @@ import PlatformSelector from "../components/PlatformSelector";
 import ProcessButton from "../components/buttons/ProcessButton";
 import DownloadButton from "../components/buttons/DownloadButton";
 
-import "./Metadata.css";
 
 import usePlatform from "../hooks/usePlatform";
 import useTokens from "../hooks/useTokens";

@@ -6,6 +6,7 @@ import App from "./App";
 // Global styles (reset + theme + utilities)
 import "./styles/global.css";
 
+
 /**
  * Root render
  * - StrictMode enabled for dev safety

@@ -1,33 +1,82 @@
+/* =========================================================
+   META FORGE — APP LAYOUT SYSTEM
+   ========================================================= */
+
+/* ================= ROOT LAYOUT ================= */
+
 .layout {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background: #0f0f14;
-  color: #ffffff;
-}
-
-/* MAIN WRAPPER */
-.layout-main {
-  flex: 1;
-  margin-left: 260px; /* Sidebar width */
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* 🔥 REQUIRED */
+  background: radial-gradient(
+    circle at top,
+    #11152a,
+    #0b0f19
+  );
+  color: var(--color-text, #ffffff);
   overflow: hidden;
 }
 
-/* PAGE CONTENT */
-.layout-content {
+/* ================= MAIN WRAPPER ================= */
+
+.layout-main {
+  position: relative;
   flex: 1;
-  padding: 24px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin-left: var(--sidebar-width, 260px);
+  transition: margin-left 0.25s ease;
+  overflow: hidden;
 }
 
-/* RESPONSIVE */
+/* ================= PAGE CONTENT ================= */
+
+.layout-content {
+  flex: 1;
+  padding: 28px 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* ================= HEADER OFFSET SUPPORT ================= */
+/* If you add a fixed header later */
+
+.layout.with-header .layout-content {
+  padding-top: 88px;
+}
+
+/* ================= COLLAPSED SIDEBAR ================= */
+
+.layout.sidebar-collapsed .layout-main {
+  margin-left: var(--sidebar-collapsed-width, 80px);
+}
+
+/* ================= SCROLLBAR ================= */
+
+.layout-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.layout-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.layout-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.layout-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(109, 92, 255, 0.7);
+}
+
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 1024px) {
   .layout-main {
-    margin-left: 80px;
+    margin-left: var(--sidebar-collapsed-width, 80px);
   }
 }
 
@@ -39,5 +88,19 @@
   .layout-main {
     margin-left: 0;
     min-height: 100vh;
+  }
+
+  .layout-content {
+    padding: 20px 16px;
+  }
+}
+
+/* ================= SAFE AREA (MOBILE) ================= */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .layout-content {
+    padding-bottom: calc(
+      24px + env(safe-area-inset-bottom)
+    );
   }
 }
