@@ -10,6 +10,7 @@ export default function useUpload() {
   const [validatedFiles, setValidatedFiles] = useState([]);
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const [uploaded, setUploaded] = useState(false); // ✅ NEW
   const [error, setError] = useState(null);
 
   /* ================= FILE SELECTION ================= */
@@ -24,7 +25,9 @@ export default function useUpload() {
 
     setFiles(validFiles.map((f) => f.file));
     setValidatedFiles(validFiles);
+
     setProgress(0);
+    setUploaded(false);
     setError(null);
 
     return true;
@@ -49,6 +52,9 @@ export default function useUpload() {
         onProgress: setProgress,
       });
 
+      setProgress(100);      // ✅ KEEP 100
+      setUploaded(true);     // ✅ MARK SUCCESS
+
       return true;
     } catch (err) {
       console.error(err);
@@ -56,7 +62,7 @@ export default function useUpload() {
       return false;
     } finally {
       setUploading(false);
-      setProgress(0);
+      // ❌ DO NOT RESET PROGRESS HERE
     }
   };
 
@@ -66,6 +72,7 @@ export default function useUpload() {
     setFiles([]);
     setValidatedFiles([]);
     setProgress(0);
+    setUploaded(false);
     setError(null);
     setUploading(false);
   };
@@ -76,6 +83,7 @@ export default function useUpload() {
 
     progress,
     uploading,
+    uploaded, // ✅ EXPOSE SUCCESS FLAG
     error,
 
     selectFiles,
@@ -83,3 +91,4 @@ export default function useUpload() {
     reset,
   };
 }
+

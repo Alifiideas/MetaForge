@@ -10,15 +10,30 @@ function FilePreview({ files = [] }) {
       <div className="file-grid">
         {files.map((file, index) => {
           const type = getFileType(file);
+          const src = getFileSrc(file);
 
           return (
             <div key={index} className="file-card">
-              <div className={`file-icon ${type}`}>
-                {type.toUpperCase()}
+              {/* ===== PREVIEW ===== */}
+              <div className="file-thumb">
+                {type === "image" && src && (
+                  <img src={src} alt={file.name || "uploaded"} />
+                )}
+
+                {type === "video" && src && (
+                  <video src={src} controls />
+                )}
+
+                {type === "file" && (
+                  <div className="file-icon">FILE</div>
+                )}
               </div>
 
+              {/* ===== INFO ===== */}
               <div className="file-info">
-                <span className="file-name">{file.name}</span>
+                <span className="file-name">
+                  {file.name || file.originalName || file.filename}
+                </span>
                 <span className="file-size">
                   {formatSize(file.size)}
                 </span>
@@ -34,9 +49,23 @@ function FilePreview({ files = [] }) {
 /* ================= HELPERS ================= */
 
 const getFileType = (file) => {
-  if (file.type.startsWith("image/")) return "image";
-  if (file.type.startsWith("video/")) return "video";
+  if (file.type?.startsWith("image/")) return "image";
+  if (file.type?.startsWith("video/")) return "video";
   return "file";
+};
+
+const getFileSrc = (file) => {
+  // Browser File object
+  if (file instanceof File) {
+    return URL.createObjectURL(file);
+  }
+
+  // Backend uploaded file
+  if (file.path) {
+    return file.path;
+  }
+
+  return null;
 };
 
 const formatSize = (bytes) => {

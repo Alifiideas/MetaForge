@@ -42,14 +42,15 @@ function Metadata() {
 
   const {
     files,
-    uploadProgress,
-    processing,
-    metadataReady,
-    handleFileUpload,
-    processFiles,
+    progress,
+    uploading,
+    uploaded,
+    error,
+    selectFiles,
+    upload,
   } = useUpload();
 
-  /* ================= COMPRESSED DEFAULTS ================= */
+  /* ================= STATE ================= */
 
   const [minTitle, setMinTitle] = useState(4);
   const [maxTitle, setMaxTitle] = useState(12);
@@ -66,7 +67,6 @@ function Metadata() {
 
   /* ================= EFFECTS ================= */
 
-  // CSV compatibility
   useEffect(() => {
     if (!platform) return;
 
@@ -78,7 +78,6 @@ function Metadata() {
     }
   }, [platform, csvType]);
 
-  // Token estimation
   useEffect(() => {
     if (!files.length) {
       setEstimatedTokens(0);
@@ -110,31 +109,24 @@ function Metadata() {
 
   /* ================= HANDLERS ================= */
 
-  const handleProcess = async () => {
+  const handleUpload = async () => {
     if (!apiKey) return alert("Please connect your API key");
+    await upload({ apiKey });
+  };
+
+  const handleProcess = async () => {
+    if (!uploaded) return alert("Upload files first");
     if (!platform) return alert("Select a platform");
-    if (!files.length) return alert("Upload files first");
     if (estimatedTokens > tokens)
       return alert("Not enough tokens");
 
-    await processFiles({
-      files,
-      apiKey,
-      settings: {
-        title: { min: minTitle, max: maxTitle },
-        keywords: { min: minKeywords, max: maxKeywords },
-        description: {
-          enabled: descEnabled,
-          min: minDesc,
-          max: maxDesc,
-        },
-      },
-    });
+    alert("✅ Ready to process metadata");
+    // Metadata API call goes here next
   };
 
   const handleDownload = () => {
     alert(
-      `CSV (${csvType.toUpperCase()}) export will be connected to backend`
+      `CSV (${csvType.toUpperCase()}) export will be connected`
     );
   };
 
@@ -146,7 +138,6 @@ function Metadata() {
       <aside className="sidebar">
         <h3>Metadata Controls</h3>
 
-        {/* TITLE */}
         <RangeSlider
           label="Minimum Title Words"
           min={2}
@@ -163,7 +154,6 @@ function Metadata() {
           onChange={setMaxTitle}
         />
 
-        {/* KEYWORDS */}
         <RangeSlider
           label="Minimum Keywords"
           min={5}
@@ -182,7 +172,6 @@ function Metadata() {
           onChange={setMaxKeywords}
         />
 
-        {/* DESCRIPTION */}
         <ToggleSwitch
           label="Description"
           checked={descEnabled}
@@ -209,7 +198,6 @@ function Metadata() {
           </>
         )}
 
-        {/* API KEY */}
         <div className="api-key">
           <label>API Key</label>
           <input
@@ -236,25 +224,27 @@ function Metadata() {
         </div>
 
         <UploadBox
-          onUpload={handleFileUpload}
-          progress={uploadProgress}
+          onFilesSelected={selectFiles}
+          onUpload={handleUpload}
+          progress={progress}
+          uploading={uploading}
           formats="JPG · PNG · SVG · EPS · MP4"
         />
 
-        {/* FILES NEVER RESET */}
+        {uploaded && (
+          <p className="upload-success">
+            ✅ Files uploaded successfully
+          </p>
+        )}
+
+        {error && <p className="error">{error}</p>}
+
         <FilePreview files={files} />
 
         <div className="actions">
           <ProcessButton
             onClick={handleProcess}
-            loading={processing}
-            disabled={
-              processing ||
-              !apiKey ||
-              !platform ||
-              !files.length ||
-              estimatedTokens > tokens
-            }
+            disabled={!uploaded}
           />
 
           <div className="export">
@@ -280,7 +270,7 @@ function Metadata() {
 
             <DownloadButton
               onClick={handleDownload}
-              disabled={!metadataReady}
+              disabled={!uploaded}
               format={csvType.toUpperCase()}
             />
           </div>
@@ -291,4 +281,5 @@ function Metadata() {
 }
 
 export default Metadata;
+
 
