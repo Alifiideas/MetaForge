@@ -1,71 +1,90 @@
+import { useEffect, useState } from "react";
 import "./FilePreview.css";
 
 function FilePreview({ files = [] }) {
-  if (!files.length) return null;
+  const [previews, setPreviews] = useState([]);
+
+  useEffect(() => {
+    if (!files.length) {
+      setPreviews([]);
+      return;
+    }
+
+    const mapped = files.map((file, index) => {
+      const type = getFileType(file);
+
+      let src = null;
+
+      if (file instanceof File) {
+        src = URL.createObjectURL(file);
+      } else if (file.path || file.url) {
+        src = file.path || file.url;
+      }
+
+      return {
+        id: file.filename || file.name || index,
+        name: file.name || file.originalName || file.filename,
+        size: file.size,
+        type,
+        src,
+      };
+    });
+
+    setPreviews(mapped);
+
+    return () => {
+      mapped.forEach((p) => {
+        if (p.src?.startsWith("blob:")) {
+          URL.revokeObjectURL(p.src);
+        }
+      });
+    };
+  }, [files]);
+
+  if (!previews.length) return null;
 
   return (
     <div className="file-preview">
       <h4>Uploaded Files</h4>
 
       <div className="file-grid">
-        {files.map((file, index) => {
-          const type = getFileType(file);
-          const src = getFileSrc(file);
+        {previews.map((file) => (
+          <div key={file.id} className="file-card">
+            <div className="file-thumb">
+              {file.type === "image" && file.src && (
+                <img src={file.src} alt={file.name} />
+              )}
 
-          return (
-            <div key={index} className="file-card">
-              {/* ===== PREVIEW ===== */}
-              <div className="file-thumb">
-                {type === "image" && src && (
-                  <img src={src} alt={file.name || "uploaded"} />
-                )}
+              {file.type === "video" && file.src && (
+                <video src={file.src} controls />
+              )}
 
-                {type === "video" && src && (
-                  <video src={src} controls />
-                )}
-
-                {type === "file" && (
-                  <div className="file-icon">FILE</div>
-                )}
-              </div>
-
-              {/* ===== INFO ===== */}
-              <div className="file-info">
-                <span className="file-name">
-                  {file.name || file.originalName || file.filename}
-                </span>
-                <span className="file-size">
-                  {formatSize(file.size)}
-                </span>
-              </div>
+              {file.type === "file" && (
+                <div className="file-icon">FILE</div>
+              )}
             </div>
-          );
-        })}
+
+            <div className="file-info">
+              <span className="file-name" title={file.name}>
+                {file.name}
+              </span>
+              <span className="file-size">
+                {formatSize(file.size)}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-/* ================= HELPERS ================= */
+/* HELPERS */
 
 const getFileType = (file) => {
-  if (file.type?.startsWith("image/")) return "image";
-  if (file.type?.startsWith("video/")) return "video";
+  if (file?.type?.startsWith("image/")) return "image";
+  if (file?.type?.startsWith("video/")) return "video";
   return "file";
-};
-
-const getFileSrc = (file) => {
-  // Browser File object
-  if (file instanceof File) {
-    return URL.createObjectURL(file);
-  }
-
-  // Backend uploaded file
-  if (file.path) {
-    return file.path;
-  }
-
-  return null;
 };
 
 const formatSize = (bytes) => {
@@ -76,3 +95,4 @@ const formatSize = (bytes) => {
 };
 
 export default FilePreview;
+

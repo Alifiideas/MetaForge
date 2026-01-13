@@ -1,6 +1,5 @@
 import Loader from "../common/Loader";
 import "./ProcessButton.css";
-
 function ProcessButton({
   onClick,
   disabled = false,

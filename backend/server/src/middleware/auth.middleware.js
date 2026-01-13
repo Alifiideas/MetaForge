@@ -1,14 +1,5 @@
-/**
- * Auth Middleware
- * - Validates API key presence
- * - Can be extended to JWT / user auth
- */
-
 export function authMiddleware(req, res, next) {
-  const apiKey =
-    req.headers["x-api-key"] ||
-    req.body.apiKey ||
-    req.query.apiKey;
+  const apiKey = req.headers["x-api-key"];
 
   if (!apiKey) {
     return res.status(401).json({
@@ -17,7 +8,6 @@ export function authMiddleware(req, res, next) {
     });
   }
 
-  // Basic validation (length / format)
   if (typeof apiKey !== "string" || apiKey.length < 20) {
     return res.status(401).json({
       success: false,
@@ -25,8 +15,6 @@ export function authMiddleware(req, res, next) {
     });
   }
 
-  // Attach to request for downstream services
   req.apiKey = apiKey;
-
   next();
 }

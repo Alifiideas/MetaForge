@@ -83,9 +83,10 @@ function App() {
 
         {/* ================= DASHBOARD ================= */}
         <Route
-          path="/"
+          path="/dashboard"
           element={<Layout tokens={tokens} plan={plan} />}
         >
+          <Route index element={<Metadata />} />
           <Route path="metadata" element={<Metadata />} />
           <Route
             path="duplicate-detector"
@@ -115,3 +116,4 @@ function App() {
 }
 
 export default App;
+

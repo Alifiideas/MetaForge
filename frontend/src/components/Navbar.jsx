@@ -15,15 +15,20 @@ function Navbar() {
         <NavLink to="/" end className="nav-link">
           Home
         </NavLink>
-        <NavLink to="/metadata" className="nav-link">
+
+        {/* ✅ Dashboard entry */}
+        <NavLink to="/dashboard/metadata" className="nav-link">
           Metadata
         </NavLink>
+
         <NavLink to="/projects" className="nav-link">
           Projects
         </NavLink>
+
         <NavLink to="/pricing" className="nav-link">
           Pricing
         </NavLink>
+
         <NavLink to="/contact" className="nav-link">
           Contact
         </NavLink>
@@ -31,7 +36,7 @@ function Navbar() {
 
       {/* Actions */}
       <div className="nav-right">
-        <Link to="/metadata">
+        <Link to="/dashboard/metadata">
           <button className="btn primary small">
             Get Started
           </button>
@@ -42,3 +47,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+

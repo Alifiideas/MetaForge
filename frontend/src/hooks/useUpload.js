@@ -1,94 +1,63 @@
 import { useState } from "react";
-import { uploadFiles, validateFiles } from "../api/upload.api";
+import axios from "axios";
 
-/**
- * useUpload
- * Handles file validation, upload, progress & errors
- */
 export default function useUpload() {
   const [files, setFiles] = useState([]);
-  const [validatedFiles, setValidatedFiles] = useState([]);
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
-  const [uploaded, setUploaded] = useState(false); // ✅ NEW
+  const [uploaded, setUploaded] = useState(false);
   const [error, setError] = useState(null);
 
-  /* ================= FILE SELECTION ================= */
-
-  const selectFiles = (fileList) => {
-    const { validFiles, errors } = validateFiles(fileList);
-
-    if (errors.length) {
-      setError(errors.join("\n"));
-      return false;
-    }
-
-    setFiles(validFiles.map((f) => f.file));
-    setValidatedFiles(validFiles);
-
+  const selectFiles = (selected) => {
+    setFiles(selected);
+    setUploaded(false); // reset when new files selected
     setProgress(0);
-    setUploaded(false);
     setError(null);
-
-    return true;
   };
 
-  /* ================= UPLOAD ================= */
-
   const upload = async ({ apiKey }) => {
-    if (!validatedFiles.length) {
-      setError("No files selected");
-      return false;
-    }
+    if (!files.length) return;
+
+    setUploading(true);
+    setError(null);
 
     try {
-      setUploading(true);
-      setProgress(1);
-      setError(null);
+      const formData = new FormData();
 
-      await uploadFiles({
-        files: validatedFiles,
-        apiKey,
-        onProgress: setProgress,
+      files.forEach((file) => {
+        formData.append("files", file);
       });
 
-      setProgress(100);      // ✅ KEEP 100
-      setUploaded(true);     // ✅ MARK SUCCESS
+      await axios.post("/api/upload", formData, {
+        headers: {
+          "x-api-key": apiKey, // ✅ MATCHES BACKEND
+        },
+        onUploadProgress: (e) => {
+          const percent = Math.round(
+            (e.loaded * 100) / e.total
+          );
+          setProgress(percent);
+        },
+      });
 
-      return true;
+      setUploaded(true); // ✅ PROCESS BUTTON ENABLES
     } catch (err) {
       console.error(err);
       setError("Upload failed");
-      return false;
+      setUploaded(false);
     } finally {
       setUploading(false);
-      // ❌ DO NOT RESET PROGRESS HERE
     }
-  };
-
-  /* ================= RESET ================= */
-
-  const reset = () => {
-    setFiles([]);
-    setValidatedFiles([]);
-    setProgress(0);
-    setUploaded(false);
-    setError(null);
-    setUploading(false);
   };
 
   return {
     files,
-    validatedFiles,
-
     progress,
     uploading,
-    uploaded, // ✅ EXPOSE SUCCESS FLAG
+    uploaded,
     error,
-
     selectFiles,
     upload,
-    reset,
   };
 }
 
