@@ -18,12 +18,20 @@ export default function useUpload() {
   const selectFiles = (selectedFiles = []) => {
     if (!selectedFiles.length) return;
 
-    const withIds = selectedFiles.map((file, index) => ({
-      id: `${file.name}-${file.size}-${file.lastModified}-${index}`,
+    const mapped = selectedFiles.map((file) => ({
+      id: `${file.name}-${file.size}-${file.lastModified}`,
       file,
     }));
 
-    setFiles(withIds);
+    setFiles((prev) => {
+      // prevent duplicates
+      const existingIds = new Set(prev.map((f) => f.id));
+      const unique = mapped.filter(
+        (f) => !existingIds.has(f.id)
+      );
+      return [...prev, ...unique];
+    });
+
     setUploaded(false);
     setProgress(0);
     setError(null);
@@ -41,6 +49,7 @@ export default function useUpload() {
     setUploading(true);
     setError(null);
     setMessage(null);
+    setProgress(0);
 
     try {
       const formData = new FormData();
@@ -54,7 +63,7 @@ export default function useUpload() {
         formData,
         {
           headers: {
-            "x-api-key": import.meta.env.VITE_API_KEY, // ✅ REQUIRED
+            "x-api-key": import.meta.env.VITE_API_KEY,
           },
           onUploadProgress: (e) => {
             if (!e.total) return;
